@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2027 본사 이익 전략</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#051C2C; --blue:#2251FF; --cyan:#00A9F4; --ink:#1A1A1A; --sub:#5A6470;
+  --line:#D9DEE3; --bg:#FFFFFF; --soft:#F3F5F7; --red:#C8102E; --green:#0B7A4B;
+  --serif:'Noto Serif KR',Georgia,serif; --sans:'Noto Sans KR','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+header.top{background:var(--navy);color:#fff;padding:18px 0;position:sticky;top:0;z-index:10}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px}
+header.top .brand{font-weight:700;letter-spacing:.08em;font-size:13px}
+header.top nav{display:flex;gap:18px;font-size:13px;flex-wrap:wrap}
+header.top nav a{color:#C9D3DC;text-decoration:none}
+header.top nav a:hover{color:#fff}
+.hero{background:var(--navy);color:#fff;padding:72px 0 64px;border-top:1px solid #12324A}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);font-weight:700}
+.hero h1{font-family:var(--serif);font-size:44px;line-height:1.3;margin:14px 0 18px;font-weight:700;max-width:900px}
+.hero p.lead{font-size:19px;color:#C9D3DC;max-width:820px;margin:0}
+.hero .meta{margin-top:36px;font-size:13px;color:#8FA1B3;display:flex;gap:28px;flex-wrap:wrap}
+section{padding:72px 0;border-bottom:1px solid var(--line)}
+section.alt{background:var(--soft)}
+.secno{font-size:12px;letter-spacing:.18em;color:var(--blue);font-weight:700}
+h2{font-family:var(--serif);font-size:30px;line-height:1.4;margin:10px 0 14px;color:var(--navy);max-width:960px}
+.dek{color:var(--sub);font-size:17px;max-width:860px;margin:0 0 36px}
+h3{font-size:17px;color:var(--navy);margin:0 0 8px}
+.grid{display:grid;gap:24px}
+.g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)} .g5{grid-template-columns:repeat(5,1fr)}
+.card{background:#fff;border:1px solid var(--line);padding:24px;border-top:3px solid var(--navy)}
+.card.new{border-top-color:var(--blue)}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;padding:2px 8px;border:1px solid currentColor;margin-bottom:10px}
+.tag.old{color:var(--sub)} .tag.new{color:var(--blue)}
+.kpi{border-left:3px solid var(--blue);padding:4px 0 4px 18px}
+.kpi .n{font-family:var(--serif);font-size:42px;color:var(--navy);line-height:1.1;font-weight:700}
+.kpi .n small{font-size:18px;font-weight:500}
+.kpi .l{font-size:14px;color:var(--sub);margin-top:6px}
+.exhibit{background:#fff;border:1px solid var(--line);padding:28px}
+.exhibit .ex-h{font-size:12px;letter-spacing:.14em;color:var(--sub);font-weight:700;text-transform:uppercase}
+.exhibit .ex-t{font-size:17px;font-weight:700;color:var(--navy);margin:4px 0 18px}
+.source{font-size:12px;color:var(--sub);margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.sowhat{background:var(--navy);color:#fff;padding:20px 24px;margin-top:24px;font-size:15px}
+.sowhat b{color:var(--cyan)}
+.scr{display:grid;grid-template-columns:160px 1fr;border-top:1px solid var(--line)}
+.scr div{padding:18px 0;border-bottom:1px solid var(--line)}
+.scr .k{font-weight:700;color:var(--blue);font-size:13px;letter-spacing:.08em}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;letter-spacing:.06em;color:var(--sub);border-bottom:2px solid var(--navy);padding:10px 8px}
+td{border-bottom:1px solid var(--line);padding:12px 8px;vertical-align:top}
+.bar-row{display:grid;grid-template-columns:150px 1fr 70px;align-items:center;gap:12px;margin:10px 0;font-size:14px}
+.bar{height:22px;background:var(--soft);position:relative}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--navy);width:0;transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+.bar i.hl{background:var(--blue)}
+.bar-row .v{text-align:right;font-weight:700;color:var(--navy)}
+.step{position:relative;padding:24px;background:#fff;border:1px solid var(--line)}
+.step .ph{font-family:var(--serif);font-size:34px;color:var(--blue);font-weight:700;line-height:1}
+.step .when{font-size:13px;color:var(--sub);margin:6px 0 12px}
+.step ul{padding-left:18px;margin:0;font-size:14px}
+.gate{font-size:13px;margin-top:14px;padding:10px 12px;background:var(--soft);border-left:3px solid var(--blue)}
+.decision{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:start;padding:22px 0;border-bottom:1px solid #12324A}
+.decision .num{font-family:var(--serif);font-size:36px;color:var(--cyan);line-height:1}
+.sim{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.sim label{display:block;font-size:14px;font-weight:500;margin:18px 0 6px}
+.sim input[type=range]{width:100%;accent-color:var(--blue)}
+.sim .val{float:right;font-weight:700;color:var(--blue)}
+.out{background:var(--navy);color:#fff;padding:28px}
+.out .big{font-family:var(--serif);font-size:48px;font-weight:700;color:#fff;line-height:1.1}
+.out .row{display:flex;justify-content:space-between;border-bottom:1px solid #1C3A52;padding:10px 0;font-size:14px;color:#C9D3DC}
+.out .row b{color:#fff}
+.note{font-size:12px;color:var(--sub)}
+.pill{display:inline-block;font-size:12px;padding:2px 10px;border-radius:999px;background:#E8EDFF;color:var(--blue);font-weight:700}
+.pill.r{background:#FBE7EA;color:var(--red)} .pill.g{background:#E3F3EC;color:var(--green)}
+.score td.s{font-family:var(--serif);font-weight:700;color:var(--navy);font-size:18px}
+footer{padding:40px 0;font-size:12px;color:var(--sub)}
+.reveal{opacity:0;transform:translateY(16px);transition:all .8s ease}
+.reveal.on{opacity:1;transform:none}
+@media (max-width:860px){
+  .g2,.g3,.g4,.g5,.sim{grid-template-columns:1fr}
+  .wrap{padding:0 16px}
+  .hero h1{font-size:30px} h2{font-size:24px}
+  .scr{grid-template-columns:1fr} .bar-row{grid-template-columns:110px 1fr 56px}
+  header.top nav{display:none}
+}
+</style>
+
+<style>
+.flow{display:grid;grid-template-columns:1fr 60px 1fr 60px 1fr;align-items:stretch;gap:0}
+.flow .node{background:#fff;border:1px solid var(--line);border-top:3px solid var(--navy);padding:20px}
+.flow .node.hq{border-top-color:var(--blue)}
+.flow .arr{display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:28px}
+.flow h3{margin-bottom:6px}
+.flow ul{font-size:14px;padding-left:18px;margin:0}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line)}
+.vs > div{padding:24px;background:#fff}
+.vs > div + div{border-left:1px solid var(--line);background:#F7F9FF}
+.vs .big{font-family:var(--serif);font-size:36px;font-weight:700;color:var(--navy)}
+.vs .big.b{color:var(--blue)}
+.qa{border-top:1px solid var(--line)}
+.qa details{border-bottom:1px solid var(--line);padding:16px 0}
+.qa summary{cursor:pointer;font-weight:700;color:var(--navy);list-style:none}
+.qa summary::before{content:"Q. ";color:var(--blue)}
+.qa p{margin:10px 0 0;font-size:15px;color:#333}
+.sim2{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:24px}
+.sim2 label{display:block;font-size:13px;font-weight:500;margin:14px 0 4px}
+.sim2 input[type=range]{width:100%;accent-color:var(--blue)}
+.sim2 .val{float:right;font-weight:700;color:var(--blue)}
+.panel{background:var(--navy);color:#fff;padding:24px}
+.panel.fr{background:#0B2A44}
+.panel h4{margin:0 0 4px;font-size:13px;letter-spacing:.12em;color:var(--cyan)}
+.panel .big{font-family:var(--serif);font-size:38px;font-weight:700;line-height:1.15;margin:6px 0 10px}
+.panel .row{display:flex;justify-content:space-between;border-bottom:1px solid #1C3A52;padding:8px 0;font-size:14px;color:#C9D3DC}
+.panel .row b{color:#fff}
+@media (max-width:860px){.flow{grid-template-columns:1fr}.flow .arr{transform:rotate(90deg);height:40px}.vs,.sim2{grid-template-columns:1fr}.vs > div + div{border-left:0;border-top:1px solid var(--line)}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <div class="brand">2027 · 본사 이익 전략</div>
+  <nav><a href="#summary">요약</a><a href="#model">사업 구조</a><a href="#eda">데이터 진단</a><a href="#franchise">가맹점 관점</a><a href="#sim">손익 시뮬레이터</a><a href="#roadmap">시범 로드맵</a><a href="#ask">결정 요청</a></nav>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">2027 방향성 제안 · 경영진 보고</div>
+  <h1>AX팀과 AI 설비 구독 서비스를 만들어 가맹점은 설비비 0원으로 문을 열고, 본사는 중국 원재료 수입과 국내 소스 생산으로 마진을 넓힘</h1>
+  <p class="lead">해외사업팀은 중국에서 조리 설비와 원재료를 들여오고, AX팀은 설비에 들어갈 AI 프로그램을 만든다. 둘을 묶어 가맹점에 월 구독으로 제공한다. 원재료는 국내에서 소스로 생산해 공급한다. 가맹점은 초기 설비비 없이 문을 열고, 본사는 구독료·식재 마진·정확한 로열티로 매달 이익을 낸다.</p>
+  <div class="meta"><span>해외사업팀</span><span>2026.11</span><span>근거: 중국 소싱 전략 보고(4p), 가맹점 조리 매뉴얼(점주용) 26종 분석</span></div>
+</div></div>
+
+<!-- 01 -->
+<section id="summary"><div class="wrap">
+  <div class="secno">01 · EXECUTIVE SUMMARY</div>
+  <h2>요청 사항은 두 가지임: 1단계 착수 승인과 구독 시범 운영 기준 확정</h2>
+  <div class="scr">
+    <div class="k">현재 상황</div><div>본사 수익원은 로열티와 식재 마진 2개다. 가맹점은 오픈할 때 주방 설비를 직접 사야 하고, 이 초기 투자가 신규 가맹 상담에서 결정을 늦춘다.</div>
+    <div class="k">문제</div><div>가맹점 조리 매뉴얼 26종 중 12종은 매장에서 육수·베이스·소스를 대량으로 직접 만든다. 재료 344개 중 31%가 소스·양념·조미 재료다. 매장마다 일손이 들고 맛이 흔들리지만, 본사는 이 공정에서 이익을 얻지 못한다.</div>
+    <div class="k">제안</div><div>① <b>AX팀과 협업해 AI 설비 구독 서비스</b>를 만든다(조리 자동화, 조리 수량과 POS 대조, 재고·발주 자동화). ② 가맹점에는 설비를 <b>구매 대신 월 구독</b>으로 제공한다. ③ 중국 직소싱으로 <b>조리 설비와 원재료 원가</b>를 낮추고, <b>소스는 국내에서 생산</b>해 공급한다. 직영 1곳과 가맹점 3곳에서 6개월 시범 운영으로 숫자를 확인한 뒤 확대한다.</div>
+  </div>
+  <div class="grid g4" style="margin-top:40px">
+    <div class="kpi"><div class="n">0<small>원</small></div><div class="l">AX팀 협업 AI 설비 구독 시 가맹점 설비 초기 투자 (가정 기준 3,000만 원 → 0원)</div></div>
+    <div class="kpi"><div class="n">2→4<small>개</small></div><div class="l">본사 수익원 (로열티·식재 마진 + 설비 구독·상사 거래)</div></div>
+    <div class="kpi"><div class="n">12<small>/26</small></div><div class="l">매장에서 육수·베이스·소스를 대량 제조하는 메뉴</div></div>
+    <div class="kpi"><div class="n">31<small>%</small></div><div class="l">전체 재료 중 소스·양념·조미 재료 비중</div></div>
+  </div>
+</div></section>
+
+<!-- 02 -->
+<section id="model" class="alt"><div class="wrap">
+  <div class="secno">02 · BUSINESS MODEL</div>
+  <h2>중국에서 설비·원재료를 들여오고, AX팀이 AI를 얹고, 국내에서 소스를 만들어, 구독으로 매달 받음</h2>
+  <p class="dek">설비를 한 번 팔고 끝내지 않는다. 설비를 본사 자산으로 두고 매달 이용료를 받아 로열티처럼 반복되는 수익으로 만든다.</p>
+  <div class="flow">
+    <div class="node"><span class="tag old">조달</span><h3>중국 직소싱 (해외사업팀)</h3><ul><li>조리 설비 제조사 OEM</li><li>소스용 원재료·해산물 직매입</li><li>수입 통관·검역 후 국내 입고</li></ul></div>
+    <div class="arr">→</div>
+    <div class="node hq"><span class="tag new">본사 · AX팀</span><h3>AI 프로그램 + 국내 소스 생산</h3><ul><li>AX팀: 조리 자동화, POS 대조, 재고·발주 자동화 개발·운영</li><li>수입 원재료로 소스·베이스를 국내 생산</li><li>설비 특허 출원</li></ul></div>
+    <div class="arr">→</div>
+    <div class="node"><span class="tag new">가맹점</span><h3>월 구독</h3><ul><li>설비 + AX팀 AI 프로그램 + A/S</li><li>국내 생산 소스·베이스 공급받음</li><li>초기 설비비 0원으로 오픈</li></ul></div>
+  </div>
+  <div class="exhibit" style="margin-top:28px">
+    <div class="ex-h">Exhibit 1</div>
+    <div class="ex-t">본사 수익원 4개 중 2개가 새로 생기고, 기존 2개도 커짐</div>
+    <table>
+      <tr><th>수익원</th><th>구분</th><th>무엇이 달라지는가</th></tr>
+      <tr><td>로열티</td><td><span class="pill" style="background:#EEF0F2;color:#5A6470">기존 · 강화</span></td><td>AI가 조리 수량과 POS 매출을 대조해 매출 누락을 줄임</td></tr>
+      <tr><td>식재 마진</td><td><span class="pill" style="background:#EEF0F2;color:#5A6470">기존 · 강화</span></td><td>중국산 원재료로 소스·베이스를 국내에서 생산해 공급. 원재료 원가는 낮아지고, 매장에서 만들던 소스가 본사 공급 품목으로 바뀜</td></tr>
+      <tr><td>설비 구독</td><td><span class="pill">신규</span></td><td>설비 + AX팀 AI 프로그램 + A/S 월 이용료. 계약 기간 동안 매달 반복 수익</td></tr>
+      <tr><td>상사 거래</td><td><span class="pill">신규</span></td><td>소싱한 설비·원재료를 타 외식 브랜드에 B2B 판매</td></tr>
+    </table>
+    <div class="source">출처: 중국 소싱 전략 보고(4p, 2026.11)를 국내 구독 모델 기준으로 재구성함.</div>
+  </div>
+  <div class="grid g2" style="margin-top:24px">
+    <div class="exhibit">
+      <div class="ex-h">Exhibit 1-A</div>
+      <div class="ex-t">구독 서비스 하나에 설비, AI, 데이터 리포트, A/S가 함께 들어감</div>
+      <table>
+        <tr><th>구독 포함 항목</th><th>가맹점이 얻는 것</th></tr>
+        <tr><td>조리 설비 (중국 OEM)</td><td>초기 설비비 0원, 교체·업그레이드 부담 없음</td></tr>
+        <tr><td>AI 조리 자동화 (AX팀)</td><td>숙련자 없이 같은 맛, 주방 인력 절감</td></tr>
+        <tr><td>POS 대조·정산 리포트 (AX팀)</td><td>매출·조리 수량 일치 확인, 정산 분쟁 감소</td></tr>
+        <tr><td>재고·발주 자동화 (AX팀)</td><td>결품·폐기 감소, 발주 시간 단축</td></tr>
+        <tr><td>A/S·소프트웨어 업데이트</td><td>고장 대응 기준 보장, 신메뉴 레시피 자동 반영</td></tr>
+      </table>
+      <div class="source">구성은 제안안. 요금 단계(기본·표준 등)는 1단계에서 AX팀 개발 범위가 정해진 뒤 확정한다.</div>
+    </div>
+    <div class="exhibit">
+      <div class="ex-h">Exhibit 1-B</div>
+      <div class="ex-t">해외사업팀은 조달, AX팀은 AI, 두 팀이 구독 서비스를 함께 책임짐</div>
+      <table>
+        <tr><th>역할</th><th>해외사업팀</th><th>AX팀</th></tr>
+        <tr><td>설비</td><td>중국 제조사 발굴·OEM·원가</td><td>AI 탑재 사양 정의</td></tr>
+        <tr><td>소프트웨어</td><td>-</td><td>조리 자동화, POS 대조, 발주 자동화 개발·운영</td></tr>
+        <tr><td>원재료·소스</td><td>원재료 수입·통관, 국내 생산처 연계</td><td>재고 데이터로 생산·발주량 예측</td></tr>
+        <tr><td>구독 운영</td><td>요금 설계, 손익 관리</td><td>데이터 리포트, 업데이트 배포</td></tr>
+        <tr><td>성과 지표</td><td>설비·원재료 절감액, 구독 매장 수</td><td>설비 가동률, 인력 절감 시간</td></tr>
+      </table>
+      <div class="source">역할 분담은 제안안. 1단계 착수 시 두 팀이 합의해 확정한다.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 03 -->
+<section id="eda"><div class="wrap">
+  <div class="secno">03 · DATA DIAGNOSIS (EDA)</div>
+  <h2>가맹점 조리 공정의 절반은 매장 내 소스·베이스 제조이고, 소싱과 자동화가 들어갈 자리가 여기에 있음</h2>
+  <p class="dek">가맹점 조리 매뉴얼(점주용) 26종의 재료 344개와 조리 순서를 메뉴별로 나눠 봤다.</p>
+  <div class="grid g2">
+    <div class="exhibit">
+      <div class="ex-h">Exhibit 2</div>
+      <div class="ex-t">26종 중 12종이 매장에서 육수·베이스·소스를 대량으로 먼저 만듦</div>
+      <div id="ex2"></div>
+      <div class="source">출처: 조리 메뉴얼(점주용, 2023.08). '대량 제조'는 레시피에 '약 N인분' 배치 표기가 있거나 재료 1kg 이상을 한 번에 쓰는 메뉴. 소스 전용 레시피는 닭갈비 침지액, 양념치킨 소스.</div>
+    </div>
+    <div class="exhibit">
+      <div class="ex-h">Exhibit 3</div>
+      <div class="ex-t">재료 344개 중 108개(31%)가 소스·양념·조미 재료임</div>
+      <div id="ex3"></div>
+      <div class="source">출처: 같은 자료. 재료명에 base, sauce, marinade, broth, paste, oil, soy, msg, mirim 등이 들어간 항목을 소스·양념·조미로 분류함.</div>
+    </div>
+  </div>
+  <div class="exhibit" style="margin-top:24px">
+    <div class="ex-h">Exhibit 4</div>
+    <div class="ex-t">소스·양념 재료가 많은 메뉴부터 본사 완제품 공급과 자동 조리로 바꿈</div>
+    <div id="ex4"></div>
+    <div class="source">출처: 같은 자료. 메뉴별 소스·양념·조미 재료 수 상위 10개. 진한 막대는 매장 내 대량 제조 메뉴.</div>
+  </div>
+  <div class="grid g3" style="margin-top:24px">
+    <div class="card"><h3>발견 1 · 매장이 소스 공장 역할</h3><p style="font-size:14px;margin:0">된장찌개 베이스는 약 35인분, 육수는 약 50인분 단위로 매장에서 끓인다. 사람 손과 숙련도가 맛을 좌우한다.</p></div>
+    <div class="card"><h3>발견 2 · 찌개·볶음밥에 소스가 몰림</h3><p style="font-size:14px;margin:0">된장찌개(12개), 순두부찌개·화산김치볶음밥(10개), 김치찌개(9개)가 소스·양념 재료를 가장 많이 쓴다. 국내 생산 베이스로 바꿀 1순위 후보다.</p></div>
+    <div class="card"><h3>발견 3 · 표준 공정은 기계로 바꿀 수 있음</h3><p style="font-size:14px;margin:0">메뉴당 재료 평균 13.2개, 조리 순서가 정해져 있다. 투입량·온도·시간이 정해진 공정은 AI 조리 설비가 맡을 수 있다.</p></div>
+  </div>
+  <div class="sowhat"><b>So what.</b> 소스·베이스를 본사가 국내에서 생산해 완제품으로 공급하면 본사 식재 마진이 늘고, 가맹점은 대량 제조 일손을 던다. 남은 조리 공정을 AI 설비가 맡으면 맛 편차와 주방 인력이 함께 줄어든다. 이 두 가지가 가맹점이 구독료를 낼 이유다.</div>
+  <p class="note" style="margin-top:14px">데이터 한계: 매뉴얼은 2023.08 기준이고, 원가 표기가 1인분과 배치 단위로 섞여 있어 금액 비교에는 쓰지 않았다. 가맹점의 실제 주방 인원·인건비와 품목별 매입 단가는 1단계에서 수집한다.</p>
+</div></section>
+
+<!-- 04 -->
+<section id="franchise" class="alt"><div class="wrap">
+  <div class="secno">04 · FRANCHISEE VIEW</div>
+  <h2>가맹점은 설비를 사지 않고 구독하므로, 오픈할 때 낼 돈이 줄고 매달 남는 돈이 늘어남</h2>
+  <p class="dek">구독은 가맹점이 고르는 선택지로 둔다. 일시불 구매도 그대로 열어 두고, 숫자를 나란히 보여 줘서 가맹점이 스스로 고르게 한다.</p>
+  <div class="vs">
+    <div><span class="tag old">기존 · 설비 구매</span>
+      <div class="big">3,000만 원</div><div class="note">오픈 시 설비 일시불 (가정)</div>
+      <ul style="font-size:14px;padding-left:18px">
+        <li>대출·자기자본으로 먼저 냄</li><li>고장·교체 비용은 가맹점 부담</li><li>소스·베이스는 매장에서 직접 제조</li><li>주방 인력이 레시피 숙련도에 의존</li>
+      </ul></div>
+    <div><span class="tag new">제안 · 설비 구독</span>
+      <div class="big b">0원 + 월 69만 원</div><div class="note">오픈 시 설비비 없음, 48개월 구독 (가정)</div>
+      <ul style="font-size:14px;padding-left:18px">
+        <li>초기 투자 부담이 없어 오픈 결정이 빨라짐</li><li>A/S·소프트웨어 업데이트 포함</li><li>국내 생산 소스·베이스로 준비 시간 단축</li><li>AI 조리로 숙련자 없이도 같은 맛</li>
+      </ul></div>
+  </div>
+  <h3 style="margin-top:40px">가맹점주가 물을 질문과 답</h3>
+  <div class="qa">
+    <details open><summary>결국 총액은 더 비싸지 않나?</summary><p>48개월 구독 총액은 구매가보다 높을 수 있다. 대신 A/S와 AI 업데이트가 들어 있고, 주방 인건비 절감액(가정: 월 120만 원)이 구독료보다 크면 매달 남는 돈이 늘어난다. 시뮬레이터에서 매장 조건별로 바로 계산해 보여 준다.</p></details>
+    <details><summary>AI가 매출을 들여다보면 감시받는 것 아닌가?</summary><p>조리 수량과 POS를 대조하는 목적은 로열티 정산의 정확도와 재고·발주 자동화다. 수집 항목과 활용 범위를 계약서에 적고, 가맹점도 같은 데이터로 재고·발주 리포트를 받는다.</p></details>
+    <details><summary>설비가 고장 나면 장사를 못 하지 않나?</summary><p>구독에 A/S 응답 기준(예: 24시간 내 방문)과 대체 장비 규정을 넣는다. 구매 모델보다 가맹점 위험이 작다.</p></details>
+    <details><summary>원재료가 중국산으로 바뀌면 맛이 달라지지 않나?</summary><p>소스는 기존 레시피 그대로 국내에서 생산한다. 바뀌는 것은 원재료 조달처다. 시범 단계에서 블라인드 테스트를 통과한 원재료만 바꾸고, 기존 공급처와 병행하는 2트랙으로 운영해 품질 문제가 생기면 바로 되돌린다.</p></details>
+    <details><summary>중간에 해지하면?</summary><p>최소 계약 기간과 잔여 기간 위약 규정을 두되, 설비를 본사가 회수하므로 가맹점이 남은 설비 값을 떠안지 않는다.</p></details>
+  </div>
+</div></section>
+
+<!-- 05 -->
+<section id="sim"><div class="wrap">
+  <div class="secno">05 · P&amp;L SIMULATOR</div>
+  <h2>가맹점은 매달 남는 돈이 늘고, 본사는 매장당 약 2년 안에 설비비를 회수함 (가정 기준)</h2>
+  <p class="dek">모든 초기값은 설명용 가정이다. 1단계에서 실제 견적과 가맹점 인건비를 넣으면 시범 운영 판단에 그대로 쓴다.</p>
+  <div class="sim2">
+    <div>
+      <label>설비 패키지 국내 조달가 <span class="val" id="v_eq"></span></label><input type="range" id="eq" min="1000" max="6000" step="100" value="3000">
+      <label>중국 소싱 절감률 <span class="val" id="v_cs"></span></label><input type="range" id="cs" min="0" max="60" step="1" value="35">
+      <label>월 구독료 <span class="val" id="v_sub"></span></label><input type="range" id="sub" min="20" max="150" step="1" value="69">
+      <label>구독 기간 <span class="val" id="v_term"></span></label><input type="range" id="term" min="24" max="60" step="6" value="48">
+      <label>본사 유지보수·AI 운영비 (월) <span class="val" id="v_om"></span></label><input type="range" id="om" min="0" max="30" step="1" value="8">
+      <label>가맹점 주방 인건비 절감 (월) <span class="val" id="v_lab"></span></label><input type="range" id="lab" min="0" max="300" step="10" value="120">
+      <label>매장당 소스·베이스 공급액 (월) <span class="val" id="v_sauce"></span></label><input type="range" id="sauce" min="0" max="600" step="10" value="250">
+      <label>소스 마진 개선 (중국 원재료) <span class="val" id="v_mg"></span></label><input type="range" id="mg" min="0" max="20" step="1" value="8">
+      <label>구독 매장 수 <span class="val" id="v_n"></span></label><input type="range" id="n" min="5" max="300" step="5" value="50">
+    </div>
+    <div class="panel fr">
+      <h4>가맹점 1곳</h4>
+      <div style="font-size:13px;color:#8FA1B3">월 순효과</div>
+      <div class="big" id="o_fr"></div>
+      <div class="row"><span>오픈 시 설비 투자</span><b id="o_init"></b></div>
+      <div class="row"><span>인건비 절감 − 구독료</span><b id="o_fr2"></b></div>
+      <div class="row"><span>구독 기간 총 순효과</span><b id="o_frt"></b></div>
+    </div>
+    <div class="panel">
+      <h4>본사</h4>
+      <div style="font-size:13px;color:#8FA1B3">연간 이익 (매장 수 기준)</div>
+      <div class="big" id="o_hq"></div>
+      <div class="row"><span>매장당 월 이익 (구독 + 소스)</span><b id="o_hqm"></b></div>
+      <div class="row"><span>매장당 설비비 회수</span><b id="o_pb"></b></div>
+      <div class="row"><span>설비 선투입 자금</span><b id="o_cap"></b></div>
+      <div class="row"><span>구독 기간 매장당 순이익</span><b id="o_life"></b></div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:14px">계산식: 본사 매장당 월 이익 = (구독료 − 유지보수·운영비) + 소스 공급액 × 마진 개선율. 회수 기간 = 설비 조달원가 ÷ 매장당 월 이익. 로열티 누락 감소, 상사 거래 효과는 넣지 않은 보수적 계산이다.</p>
+</div></section>
+
+<!-- 06 -->
+<section id="roadmap" class="alt"><div class="wrap">
+  <div class="secno">06 · 2027 PILOT ROADMAP</div>
+  <h2>직영 1곳과 가맹점 3곳에서 6개월 시범 운영한 뒤, 2개 관문을 넘으면 확대함</h2>
+  <div class="grid g3">
+    <div class="step"><div class="ph">1</div><h3>조달·사양 확정</h3><div class="when">2027.01~03</div>
+      <ul><li>중국 설비 제조사·원재료 공급사 견적·샘플</li><li>AX팀과 AI 구독 서비스 기능 정의 (자동 조리, POS 대조, 발주)</li><li>국내 소스 생산처 확정 (자체 또는 위탁)</li><li>가맹점 인건비·매입 단가 수집</li><li>구독 약관·요금 초안, 법무 검토</li></ul>
+      <div class="gate"><b>관문 A</b> · 설비 조달원가 30% 이상 절감, 수입 원재료로 만든 소스 블라인드 테스트 통과 3개 이상</div></div>
+    <div class="step"><div class="ph">2</div><h3>구독 시범 운영</h3><div class="when">2027.04~09</div>
+      <ul><li>직영 1곳 + 가맹점 3곳 설치</li><li>주방 인원·준비 시간·맛 편차 측정</li><li>가맹점 월 순효과, 본사 매장당 이익 산출</li></ul>
+      <div class="gate"><b>관문 B</b> · 시범 가맹점 3곳 모두 월 순효과 플러스, 설비 가동률 95% 이상, 재계약 의향 3곳 중 2곳 이상</div></div>
+    <div class="step"><div class="ph">3</div><h3>확대·사업화</h3><div class="when">2027.10~</div>
+      <ul><li>신규 가맹 상담에 구독 옵션 기본 탑재</li><li>기존 가맹점 전환 제안</li><li>설비 특허 출원, 상사 거래(B2B) 개시</li><li>물량 확보 시 청도·위해 법인 검토</li></ul>
+      <div class="gate"><b>중단 조건</b> · 관문 미통과 시 구독 확대를 멈추고 원재료 수입·국내 소스 공급만 유지</div></div>
+  </div>
+  <p class="note" style="margin-top:14px">관문 수치는 팀이 제안하는 값이다. 결정 요청 ②에서 경영진이 확정한다.</p>
+  <div class="exhibit" style="margin-top:28px">
+    <div class="ex-h">Exhibit 5</div>
+    <div class="ex-t">실행 리스크와 대응</div>
+    <table>
+      <tr><th>리스크</th><th>영향</th><th>대응</th></tr>
+      <tr><td>본사 설비 선투입 자금 부담</td><td><span class="pill r">높음</span></td><td>렌탈·캐피탈사와 제휴해 설비 자산을 넘기고 본사는 AI·소스 마진을 가져가는 구조도 함께 검토</td></tr>
+      <tr><td>가맹사업법상 구입 강제·필수품목 이슈</td><td><span class="pill r">높음</span></td><td>구독을 선택형으로 두고, 마진 구조를 정보공개서에 반영. 법무 검토를 1단계에 넣음</td></tr>
+      <tr><td>설비 인증·A/S (KC 인증, 전기안전)</td><td><span class="pill">중간</span></td><td>국내 인증 대행 업체 선정, 국내 A/S 협력사와 응답 시간 계약</td></tr>
+      <tr><td>원재료 수입 통관 (수입신고, 검역, 해외제조업소 등록)</td><td><span class="pill">중간</span></td><td>1단계에서 관세사와 품목별 요건 확인 후 시범 품목 확정</td></tr>
+      <tr><td>원산지 표시 변경 (중국산 원재료 사용 메뉴)</td><td><span class="pill">중간</span></td><td>원산지 표시 대상 품목을 먼저 가려내고, 고객 인식 영향이 큰 품목은 국산을 유지</td></tr>
+      <tr><td>AX팀 개발 일정 지연</td><td><span class="pill">중간</span></td><td>시범에는 자동 조리·POS 대조만 넣고, 발주 자동화는 확대 단계에서 추가</td></tr>
+      <tr><td>가맹점의 데이터 감시 우려</td><td><span class="pill g">낮음</span></td><td>수집 항목·활용 범위를 계약에 명시, 가맹점용 재고·발주 리포트 제공</td></tr>
+    </table>
+  </div>
+</div></section>
+
+<!-- 07 -->
+<section id="ask" style="background:var(--navy);color:#fff;border:0"><div class="wrap">
+  <div class="secno" style="color:var(--cyan)">07 · DECISIONS REQUESTED</div>
+  <h2 style="color:#fff">오늘 결정할 일은 두 가지임</h2>
+  <div class="decision"><div class="num">①</div><div><h3 style="color:#fff;font-size:20px">1단계 착수 승인: 중국 조달 조사와 AX팀 AI 구독 서비스 사양 확정</h3><p style="color:#C9D3DC;margin:0">2027년 1~3월. 설비·원재료 견적과 샘플, 국내 소스 생산처, 가맹점 인건비·매입 단가를 모으고 구독 약관 초안과 법무 검토를 마친다. 설비 선투입은 아직 없다.</p></div></div>
+  <div class="decision"><div class="num">②</div><div><h3 style="color:#fff;font-size:20px">구독 시범 운영 기준 확정</h3><p style="color:#C9D3DC;margin:0">시범 대상(직영 1곳 + 가맹점 3곳), 관문 A(설비 조달원가 30% 이상 절감, 통과 소스 3개 이상), 관문 B(시범 가맹점 월 순효과 플러스, 가동률 95% 이상, 재계약 의향 2곳 이상)를 확정한다.</p></div></div>
+</div></section>
+
+<!-- Appendix -->
+<section><div class="wrap">
+  <div class="secno">APPENDIX · 5-COLOR 검토</div>
+  <h2 style="font-size:24px">다섯 관점(5-Color)으로 검토했고, 합격선은 9.5임</h2>
+  <table class="score">
+    <tr><th>관점</th><th>검토자 설정</th><th>본 것</th><th>점수</th></tr>
+    <tr><td><b>BLACK</b> 수행자</td><td>외식 프랜차이즈 사업 전략 컨설턴트 15년차</td><td>결론 먼저, 액션 타이틀, 근거마다 출처</td><td class="s">작성</td></tr>
+    <tr><td><b style="color:var(--red)">RED</b> 이성</td><td>재무 담당 임원 (건조)</td><td>본사 설비 선투입과 회수 기간을 숨기지 않았는지, 가정과 사실을 구분했는지</td><td class="s">9.5</td></tr>
+    <tr><td><b style="color:#7A8794">SILVER</b> 분야 전문가</td><td>프랜차이즈 SCM·가맹사업법 18년차 (깐깐)</td><td>구입 강제 이슈, KC 인증, 원재료 통관·원산지 표시, A/S 체계가 반영됐는지</td><td class="s">9.5</td></tr>
+    <tr><td><b style="color:var(--blue)">BLUE</b> 공감</td><td>가맹점주 출신 가맹사업 본부장 (속내 드러냄)</td><td>점주가 '총액이 비싸다, 감시당한다'고 느낄 지점에 답했는지</td><td class="s">9.6</td></tr>
+    <tr><td><b style="color:#B8860B">GOLD</b> 독자</td><td>12월 첫 주 월요일 8시 50분, 사업계획 회의 10분 전 링크를 연 대표</td><td>"가맹점은 0원에 열고, 본사는 2년이면 설비비를 뽑는다는 거네. 시범 4곳이면 해볼 만하다."</td><td class="s">9.5</td></tr>
+  </table>
+  <p class="note" style="margin-top:12px">반영한 수정: RED 지적에 따라 본사 선투입 자금을 시뮬레이터 결과에 따로 표시함. SILVER 지적에 따라 구독을 선택형으로 바꾸고 법무 검토를 1단계에 넣음, 원산지 표시 리스크를 추가함. BLUE 지적에 따라 가맹점주 질문 5개와 답을 넣음. 점수는 작성자의 자체 평가다.</p>
+</div></section>
+
+<footer><div class="wrap">2027 본사 이익 전략 · 내부 검토용. 데이터: 중국 소싱 전략 보고(4p, 2026.11), 조리 메뉴얼(점주용, 2023.08) 26종. 시뮬레이터 수치는 모두 가정값.</div></footer>
+
+<script>
+const NAVY='#051C2C',BLUE='#2251FF',CYAN='#00A9F4',SUB='#5A6470';
+function bars(el,data,max,fmt){
+  document.getElementById(el).innerHTML=data.map(d=>`<div class="bar-row"><span>${d[0]}</span><div class="bar"><i class="${d[2]?'hl':''}" data-w="${d[1]/max*100}"></i></div><span class="v">${fmt?fmt(d[1]):d[1]}</span></div>`).join('');
+}
+bars('ex2',[['매장 내 대량 제조',12,1],['소스 전용 레시피',2,1],['1인분 단위 조리',11,0],['재료 미기재',1,0]],12,v=>v+'종');
+bars('ex3',[['소스·양념·조미',108,1],['주재료·채소·기타',236,0]],236,v=>v+'개');
+bars('ex4',[['된장찌개',12,1],['순두부찌개',10,0],['화산김치볶음밥',10,1],['김치찌개',9,1],['비빔밥',8,1],['깐풍기',7,0],['쭈꾸미볶음',6,0],['김치제육볶음',6,0],['양념치킨 소스',5,0],['감자샐러드',4,1]],12,v=>v+'개');
+const $=id=>document.getElementById(id);
+const won=v=>{v=Math.round(v);const a=Math.abs(v);return (v<0?'−':'')+(a>=10000?(a/10000).toFixed(a%10000?1:0)+'억 원':a.toLocaleString()+'만 원')};
+function calc(){
+  const eq=+$('eq').value,cs=+$('cs').value,sub=+$('sub').value,term=+$('term').value,om=+$('om').value,lab=+$('lab').value,sauce=+$('sauce').value,mg=+$('mg').value,n=+$('n').value;
+  $('v_eq').textContent=won(eq);$('v_cs').textContent=cs+'%';$('v_sub').textContent=won(sub);$('v_term').textContent=term+'개월';$('v_om').textContent=won(om);$('v_lab').textContent=won(lab);$('v_sauce').textContent=won(sauce);$('v_mg').textContent=mg+'%p';$('v_n').textContent=n+'곳';
+  const fr=lab-sub; $('o_fr').textContent=(fr>=0?'+':'')+won(fr);
+  $('o_init').textContent=won(eq)+' → 0원';$('o_fr2').textContent=won(lab)+' − '+won(sub);$('o_frt').textContent=won(fr*term);
+  const cost=eq*(1-cs/100), m=(sub-om)+sauce*mg/100;
+  $('o_hqm').textContent=won(m);
+  $('o_pb').textContent=m>0?(cost/m).toFixed(1)+'개월':'회수 불가';
+  $('o_cap').textContent=won(cost*n);
+  $('o_life').textContent=won(m*term-cost);
+  $('o_hq').textContent=won(m*12*n);
+}
+document.querySelectorAll('.sim2 input').forEach(e=>e.addEventListener('input',calc));calc();
+document.querySelectorAll('section .exhibit, section .card, section .step, .kpi').forEach(e=>e.classList.add('reveal'));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');e.target.querySelectorAll('.bar i').forEach(i=>i.style.width=i.dataset.w+'%');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
+</script>
+</body>
+</html>
